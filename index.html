@@ -339,6 +339,8 @@
   @media (max-width: 640px) {
     #story .story-grid { grid-template-columns: 1fr; }
     .story-quote { grid-column: 1; }
+    .story-block { padding: 24px 20px; }
+    .story-quote { padding: 28px 20px; }
   }
 
   /* ─── EVENTS TIMELINE ─── */
@@ -439,16 +441,66 @@
   }
 
   @media (max-width: 580px) {
-    .timeline::before { left: 20px; }
+    /* ── Timeline: full vertical single column ── */
+    .timeline { max-width: 100%; padding: 0 4px; }
+    .timeline::before { left: 19px; top: 0; bottom: 0; }
+
     .timeline-item {
-      grid-template-columns: 40px 1fr;
-      gap: 0 16px;
+      display: flex;
+      flex-direction: row;
+      gap: 0;
+      margin-bottom: 40px;
+      align-items: flex-start;
     }
-    .timeline-item .tl-dot   { grid-column: 1; grid-row: 1; }
-    .timeline-item .tl-content { grid-column: 2; grid-row: 1; text-align: left !important; }
-    .timeline-item .tl-time  { grid-column: 2; grid-row: 2; text-align: left !important; padding-top: 8px; }
-    .timeline-item:nth-child(even) .tl-dot   { grid-column: 1; }
-    .timeline-item:nth-child(even) .tl-content { grid-column: 2; }
+
+    /* All children reset — no grid-column tricks */
+    .timeline-item .tl-dot,
+    .timeline-item:nth-child(odd) .tl-dot,
+    .timeline-item:nth-child(even) .tl-dot {
+      order: 1;
+      flex: 0 0 40px;
+      padding-top: 2px;
+    }
+
+    .timeline-item .tl-content,
+    .timeline-item:nth-child(odd) .tl-content,
+    .timeline-item:nth-child(even) .tl-content {
+      order: 2;
+      flex: 1;
+      text-align: left !important;
+      padding-left: 14px;
+    }
+
+    .timeline-item .tl-time,
+    .timeline-item:nth-child(odd) .tl-time,
+    .timeline-item:nth-child(even) .tl-time {
+      display: none; /* time shown inside content via badge */
+    }
+
+    /* Show date badge inline on mobile */
+    .tl-date-badge { display: inline-block; margin-bottom: 6px; font-size: 11px; padding: 3px 10px; }
+    .tl-content h3 { font-size: 19px; }
+    .tl-content .tl-venue { font-size: 13px; }
+    .tl-content .tl-desc { font-size: 14px; }
+    .tl-content .tl-ml { font-size: 14px; }
+
+    /* Inline time shown below title on mobile */
+    .tl-content::before {
+      content: attr(data-time);
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--lotus);
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+
+    .gcal-btn {
+      font-size: 12px;
+      padding: 8px 14px;
+      margin-top: 10px;
+    }
   }
 
   /* ─── VENUE MAP ─── */
@@ -555,6 +607,111 @@
 
   @media (max-width: 640px) {
     .venue-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ══════════════════════════════════════
+     COMPREHENSIVE MOBILE STYLES ≤ 480px
+  ══════════════════════════════════════ */
+  @media (max-width: 480px) {
+
+    /* Nav */
+    nav { padding: 12px 10px; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    nav a { font-size: 9px; letter-spacing: 0.1em; }
+
+    /* Sections */
+    section { padding: 56px 16px; }
+    .section-inner { max-width: 100%; }
+    .section-title { font-size: clamp(24px, 7vw, 34px); }
+
+    /* Hero */
+    #hero { padding: 90px 16px 40px; }
+    .hero-gold-border { padding: 32px 20px 28px; }
+    .hero-top-label { font-size: 11px; letter-spacing: 0.25em; }
+    .hero-names { font-size: clamp(32px, 10vw, 48px); }
+    .hero-malayalam { font-size: clamp(16px, 5vw, 22px); }
+    .couple-illustration { max-width: 260px; }
+
+    /* Story */
+    .story-block { padding: 20px 16px; }
+    .story-block p { font-size: 15px; }
+    .story-quote { padding: 24px 16px; }
+    .story-quote blockquote { font-size: clamp(15px, 4vw, 18px); }
+
+    /* Venue */
+    .venue-grid { gap: 20px; }
+    .venue-info { padding: 24px 18px; }
+    .venue-name { font-size: 20px; }
+    .map-link { padding: 10px 16px; font-size: 13px; width: 100%; justify-content: center; }
+    .map-frame { aspect-ratio: 4/3; }
+
+    /* ── Save the Date / Google Calendar Cards ── */
+    #rsvp .section-inner { padding: 0; }
+    .gcal-cards {
+      grid-template-columns: 1fr;
+      gap: 18px;
+      max-width: 100%;
+      margin: 32px 0 0;
+    }
+    .gcal-event-card {
+      padding: 24px 18px;
+      border-width: 1px;
+    }
+    .gcal-card-icon { width: 40px; height: 40px; margin-bottom: 12px; }
+    .gcal-card-date-pill {
+      font-size: 11px;
+      padding: 4px 12px;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+    .gcal-card-title {
+      font-size: 17px;
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+    .gcal-card-time {
+      font-size: 19px;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .gcal-card-venue {
+      font-size: 13px;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .gcal-card-venue span { font-size: 11px; }
+    .gcal-add-btn {
+      font-size: 11px;
+      padding: 12px 14px;
+      letter-spacing: 0.1em;
+      gap: 6px;
+    }
+    .gcal-add-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    /* Corner ornaments too large on mobile */
+    .corner-tr, .corner-bl, .corner-br, .corner-tl { width: 12px; height: 12px; }
+    /* Bottom hint text */
+    #rsvp .fade-up.delay-4 {
+      font-size: 12px;
+      margin-top: 20px;
+      padding: 0 8px;
+      letter-spacing: 0;
+    }
+
+    /* Footer */
+    footer { padding: 36px 16px; }
+    .footer-names { font-size: 20px; }
+
+    /* Gold divider */
+    .gold-divider { max-width: 280px; }
+  }
+
+  /* Mid-range tablets 481–640px */
+  @media (min-width: 481px) and (max-width: 640px) {
+    nav { gap: 16px; }
+    .hero-gold-border { padding: 40px 28px; }
+    .gcal-cards { grid-template-columns: 1fr; gap: 24px; max-width: 480px; }
+    .gcal-event-card { padding: 28px 24px; }
+    .gcal-add-btn { font-size: 13px; letter-spacing: 0.12em; }
+    .venue-info { padding: 28px 22px; }
   }
 
   /* ─── GOOGLE CALENDAR BUTTON (timeline) ─── */
@@ -677,9 +834,7 @@
   }
   .gcal-add-btn:hover { background: var(--maroon-light); transform: translateY(-1px); }
 
-  @media (max-width: 580px) {
-    .gcal-cards { grid-template-columns: 1fr; }
-  }
+  /* gcal mobile handled in global mobile block above */
 
   /* ─── RSVP STYLES (kept for form-input etc. reuse) ─── */
   #rsvp { background: transparent; }
@@ -1146,7 +1301,7 @@
           <circle cx="22" cy="22" r="4" fill="#e8d08a"/>
         </svg>
         <h3>How We Met</h3>
-        <p>Their families had known of each other for years — two households rooted in the same soil of Kollam, the same quiet values, the same idea of what a good life looks like. When the elders decided it was time, Sijin and Prathyusha met simply, honestly — no performance, no pretence. They talked. They listened. And somewhere in that ordinary afternoon, something settled. Not fireworks. Just a deep, calm certainty that this was right.</p>
+        <p>In the beautiful tradition of families coming together, Sijin and Prathyusha were introduced by their elders. What began as a simple meeting soon felt warm and natural, as conversations flowed easily and smiles were shared. With the quiet joy of both families, it felt as though two paths that were meant to meet had finally come together.</p>
       </div>
 
       <div class="story-block fade-up delay-2">
@@ -1155,7 +1310,7 @@
           <path d="M22 11 L24.5 18.5 L32 18.5 L26 23 L28 30.5 L22 26.5 L16 30.5 L18 23 L12 18.5 L19.5 18.5 Z" fill="#c9a84c" opacity="0.6"/>
         </svg>
         <h3>The Promise</h3>
-        <p>The families gathered, the nischayam was fixed, and in that room full of people who had watched them both grow up — Sijin and Prathyusha said yes. Not as a formality, but as a choice. Everyone there already knew it was a good match. What nobody expected was how quickly it became obvious that it was also a happy one. The smiles gave it away.</p>
+        <p>With the blessings of parents, elders, and loved ones, their nischayam was joyfully fixed. Surrounded by family who had watched them grow, Sijin and Prathyusha happily said yes to a lifetime together. What began through tradition soon blossomed into a bond of understanding, warmth, and happiness — a new journey they now begin with grateful hearts. 💛</p>
       </div>
 
       <div class="story-quote fade-up delay-3">
@@ -1178,9 +1333,7 @@
 
       <!-- Event 1: Wedding Ceremony -->
       <div class="timeline-item fade-up">
-        <div class="tl-content">
-          <p class="tl-ml">വിവാഹം</p>
-          <h3>Wedding Ceremony</h3>
+        <div class="tl-content" data-time="10:00 AM – 10:24 AM">
           <p class="tl-venue">Aadhinadu Shaktikulangara Devi Temple</p>
           <p class="tl-desc">The sacred Vivah ceremony, performed with Vedic rites under the blessings of the divine.</p>
           <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sijin+%26+Prathyusha+Wedding+Ceremony&dates=20260412T043000Z/20260412T045400Z&details=Wedding+Ceremony+at+Aadhinadu+Shaktikulangara+Devi+Temple,+Adinadu+North,+Karunagappally,+Kollam&location=Aadhinadu+Shaktikulangara+Devi+Temple,+Adinadu+North,+Karunagappally,+Kollam,+Kerala" target="_blank" class="gcal-btn">
@@ -1218,9 +1371,7 @@
             </svg>
           </div>
         </div>
-        <div class="tl-content">
-          <p class="tl-ml">സ്വീകരണം</p>
-          <h3>Reception</h3>
+        <div class="tl-content" data-time="4:00 PM – 7:00 PM">
           <p class="tl-venue">Dr. Jayakumar Hall, Punalur</p>
           <p class="tl-desc">An evening of celebration, music, and joy as we welcome family and friends to bless the newlyweds.</p>
           <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sijin+%26+Prathyusha+Wedding+Reception&dates=20260413T103000Z/20260413T133000Z&details=Wedding+Reception+at+Dr.+Jayakumar+Hall,+Punalur,+Kollam&location=Dr.+Jayakumar+Hall,+Punalur,+Kollam,+Kerala" target="_blank" class="gcal-btn">
@@ -1318,8 +1469,8 @@
   <div class="section-inner">
     <p class="section-label fade-up">കലണ്ടറിൽ സൂക്ഷിക്കൂ</p>
     <h2 class="section-title fade-up delay-1">Save the <em>Date</em></h2>
-    <p style="text-align:center;font-style:italic;color:var(--text-mid);font-size:16px;margin-top:12px;line-height:1.8" class="fade-up delay-2">
-      Add our celebration to your calendar so you never miss a moment<br>of this joyful occasion.
+    <p style="text-align:center;font-style:italic;color:var(--text-mid);font-size:16px;margin-top:12px;line-height:1.8;padding:0 16px" class="fade-up delay-2">
+      Add our celebration to your calendar so you never miss a moment of this joyful occasion.
     </p>
 
     <div class="gcal-cards fade-up delay-3">
